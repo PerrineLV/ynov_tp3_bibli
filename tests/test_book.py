@@ -45,3 +45,14 @@ class TestBookBorrowing:
         self.book.borrow()
         assert not self.book.borrow()
         assert not self.book.is_available()
+
+    def test_return_book_not_borrowed_fails(self):
+        """Test retour livre non emprunté"""
+        assert not self.book.return_book()
+        assert self.book.is_available()
+
+    def test_return_borrowed_book_success(self):
+        """Test retour livre emprunté"""
+        self.book.borrow()
+        assert self.book.return_book()
+        assert self.book.is_available()
