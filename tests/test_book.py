@@ -1,6 +1,11 @@
 import pytest
 from src.book import Book
 
+@pytest.fixture
+def book():
+    """Fixture : prépare un livre pour chaque test"""
+    return Book(title="1984", author="George Orwell", isbn="1234567890123")
+
 class TestBookCreation:
     """Tests de création de livre"""
 
@@ -11,7 +16,7 @@ class TestBookCreation:
         assert book.author == "George Orwell"
         assert book.isbn == "1234567890123"
 
-    def test_create_book_empty_title_raises_error(self):
+    def test_create_book_empty_title(self):
         """Test titre vide lève une erreur"""
         with pytest.raises(ValueError):
             Book(title="", author="George Orwell", isbn="1234567890123")
@@ -26,33 +31,29 @@ class TestBookCreation:
 class TestBookBorrowing:
     """Tests d'emprunt de livre"""
 
-    def setup_method(self):
-        """Fixture : prépare un livre pour chaque test"""
-        self.book = Book(title="1984", author="George Orwell", isbn="1234567890123")
-
-    def test_new_book_is_available(self):
+    def test_new_book_is_available(self, book):
         """Test livre neuf disponible"""
-        assert self.book.is_available()
+        assert book.is_available()
 
-    def test_borrow_available_book_success(self):
+    def test_borrow_available_book_success(self, book):
         """Test emprunt livre disponible"""
-        assert self.book.borrow()
-        assert not self.book.is_available()
-        assert not self.book.is_available()
+        assert book.borrow()
+        assert not book.is_available()
+        assert not book.is_available()
 
-    def test_borrow_already_borrowed_book_fails(self):
+    def test_borrow_already_borrowed_book_fails(self, book):
         """Test emprunt livre déjà emprunté"""
-        self.book.borrow()
-        assert not self.book.borrow()
-        assert not self.book.is_available()
+        book.borrow()
+        assert not book.borrow()
+        assert not book.is_available()
 
-    def test_return_book_not_borrowed_fails(self):
+    def test_return_book_not_borrowed_fails(self, book):
         """Test retour livre non emprunté"""
-        assert not self.book.return_book()
-        assert self.book.is_available()
+        assert not book.return_book()
+        assert book.is_available()
 
-    def test_return_borrowed_book_success(self):
+    def test_return_borrowed_book_success(self, book):
         """Test retour livre emprunté"""
-        self.book.borrow()
-        assert self.book.return_book()
-        assert self.book.is_available()
+        book.borrow()
+        assert book.return_book()
+        assert book.is_available()
