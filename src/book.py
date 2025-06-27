@@ -8,6 +8,8 @@ class Book:
             raise ValueError("L'auteur doit être une chaîne non vide.")
         if not isinstance(isbn, str) or not isbn.strip():
             raise ValueError("L'ISBN doit être une chaîne non vide.")
+        if not (isinstance(isbn, str) and len(isbn) == 13 and isbn.isdigit()):
+            raise ValueError("L'ISBN doit être une chaîne de 13 chiffres.")
         self.title = title
         self.author = author
         self.isbn = isbn
