@@ -12,22 +12,18 @@ class Book:
         self.author = author
         self.isbn = isbn
         self.borrowed = False
-        pass
 
     def is_available(self):
         return not self.borrowed
-        pass
 
     def borrow(self):
         if self.borrowed:
             return False
         self.borrowed = True
         return True
-        pass
 
     def return_book(self):
         if not self.borrowed:
             return False
         self.borrowed = False
         return True
-        pass
